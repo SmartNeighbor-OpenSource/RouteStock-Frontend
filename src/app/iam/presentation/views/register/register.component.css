@@ -1,0 +1,46 @@
+.register-card {
+  max-width: 460px;
+  margin: 60px auto;
+  padding: 16px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.submit-btn {
+  margin-top: 8px;
+  height: 44px;
+  font-size: 16px;
+}
+
+.role-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--mat-sys-on-surface-variant);
+  background: var(--mat-sys-surface-variant);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+}
+
+.role-hint mat-icon {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+}
+
+.error-message {
+  color: var(--mat-sys-error);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.login-link {
+  font-size: 14px;
+  text-align: center;
+  width: 100%;
+}

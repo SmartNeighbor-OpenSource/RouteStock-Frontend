@@ -1,0 +1,36 @@
+@if (store.loading()) {
+  <div class="spinner-center">
+    <mat-spinner diameter="48" />
+  </div>
+} @else if (store.error()) {
+  <p class="error-msg">{{ store.error() }}</p>
+} @else if (store.selected(); as commerce) {
+  <mat-card class="commerce-card">
+    @if (commerce.imageUrl) {
+      <img mat-card-image [src]="commerce.imageUrl" [alt]="commerce.name" class="commerce-img" />
+    }
+    <mat-card-header>
+      <mat-card-title>{{ commerce.name }}</mat-card-title>
+      <mat-card-subtitle>
+        <mat-chip-set>
+          <mat-chip>{{ commerce.type }}</mat-chip>
+        </mat-chip-set>
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p class="description">{{ commerce.description }}</p>
+
+      <mat-divider />
+
+      <div class="info-row">
+        <mat-icon>location_on</mat-icon>
+        <span>{{ commerce.address }}</span>
+      </div>
+      <div class="info-row">
+        <mat-icon>map</mat-icon>
+        <span>Lat {{ commerce.location.lat }}, Lng {{ commerce.location.lng }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+}

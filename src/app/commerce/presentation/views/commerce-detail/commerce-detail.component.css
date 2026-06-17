@@ -1,0 +1,6 @@
+.commerce-card { max-width: 680px; margin: 32px auto; }
+.commerce-img  { max-height: 280px; object-fit: cover; }
+.description   { font-size: 15px; line-height: 1.6; margin: 16px 0; }
+.info-row      { display: flex; align-items: center; gap: 8px; margin: 8px 0; font-size: 14px; }
+.spinner-center{ display: flex; justify-content: center; margin-top: 80px; }
+.error-msg     { color: var(--mat-sys-error); text-align: center; margin-top: 40px; }

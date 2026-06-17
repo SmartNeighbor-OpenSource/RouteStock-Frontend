@@ -1,0 +1,28 @@
+.login-card {
+  max-width: 420px;
+  margin: 80px auto;
+  padding: 16px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.submit-btn {
+  margin-top: 8px;
+  height: 44px;
+  font-size: 16px;
+}
+
+.error-message {
+  color: var(--mat-sys-error);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.register-link {
+  font-size: 14px;
+  text-align: center;
+  width: 100%;
+}

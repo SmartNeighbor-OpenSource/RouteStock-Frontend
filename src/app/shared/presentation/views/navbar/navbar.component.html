@@ -1,0 +1,60 @@
+<!-- T07: Navbar responsive con Angular Material -->
+@if (store.isAuthenticated()) {
+  <mat-toolbar color="primary" class="navbar">
+    <!-- Mobile: hamburger -->
+    @if (isMobile()) {
+      <button mat-icon-button (click)="sidenavOpen = !sidenavOpen" aria-label="Menú">
+        <mat-icon>menu</mat-icon>
+      </button>
+    }
+
+    <!-- Logo / Brand -->
+    <a routerLink="/search" class="brand">
+      <mat-icon>route</mat-icon>
+      RouteStock
+    </a>
+
+    <span class="spacer"></span>
+
+    <!-- Desktop: links directos -->
+    @if (!isMobile()) {
+      @for (item of visibleItems; track item.route) {
+        <a mat-button [routerLink]="item.route" routerLinkActive="active-link">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          {{ item.label }}
+        </a>
+      }
+    }
+
+    <!-- Usuario + logout -->
+    <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="Perfil">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item disabled>
+        <mat-icon>person</mat-icon>
+        {{ store.currentUser()?.name }}
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Cerrar sesión
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <!-- Mobile sidenav -->
+  @if (isMobile()) {
+    <mat-sidenav-container>
+      <mat-sidenav [(opened)]="sidenavOpen" mode="over">
+        <mat-nav-list>
+          @for (item of visibleItems; track item.route) {
+            <a mat-list-item [routerLink]="item.route" (click)="sidenavOpen = false">
+              <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+              {{ item.label }}
+            </a>
+          }
+        </mat-nav-list>
+      </mat-sidenav>
+    </mat-sidenav-container>
+  }
+}
