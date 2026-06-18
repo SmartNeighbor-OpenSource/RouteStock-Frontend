@@ -33,4 +33,33 @@
       </div>
     </mat-card-content>
   </mat-card>
+
+  <div class="products-section">
+    <h3>{{ focusedProductId ? 'Producto seleccionado' : 'Productos disponibles' }}</h3>
+
+    @if (products().length === 0) {
+      <div class="empty-state">
+        <mat-icon>inventory_2</mat-icon>
+        <p>Este comercio aún no tiene productos publicados.</p>
+      </div>
+    } @else {
+      <div class="products-grid">
+        @for (product of products(); track product.id) {
+          <mat-card class="product-card" [class.out-of-stock]="!product.isAvailable()">
+            <mat-card-header>
+              <mat-card-title>{{ product.name }}</mat-card-title>
+              <mat-card-subtitle>{{ product.category }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p class="price">S/ {{ product.price | number:'1.2-2' }}</p>
+              <p class="stock" [class.no-stock]="!product.isAvailable()">
+                <mat-icon>{{ product.isAvailable() ? 'check_circle' : 'cancel' }}</mat-icon>
+                {{ product.isAvailable() ? 'En stock (' + product.stock + ')' : 'Sin stock' }}
+              </p>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    }
+  </div>
 }

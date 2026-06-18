@@ -7,8 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { IamStore } from '../../application/iam.store';
-import { Credentials } from '../../domain/model/credentials.entity';
+import { IamStore } from '../../../application/iam.store';
+import { Credentials } from '../../../domain/model/credentials.entity';
+
 
 @Component({
   selector: 'app-login',

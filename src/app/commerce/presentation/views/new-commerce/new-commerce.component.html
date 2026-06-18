@@ -1,0 +1,89 @@
+<mat-card class="new-commerce-card">
+  <mat-card-header>
+    <mat-card-title>Nuevo comercio</mat-card-title>
+    <mat-card-subtitle>Registra tu negocio en RouteStock</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre del comercio</mat-label>
+        <input matInput formControlName="name" placeholder="Ej: Bodega Don Luis" />
+        <mat-icon matPrefix>storefront</mat-icon>
+        @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
+          <mat-error>El nombre es obligatorio</mat-error>
+        }
+        @if (form.get('name')?.hasError('minlength') && form.get('name')?.touched) {
+          <mat-error>Mínimo 2 caracteres</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tipo de comercio</mat-label>
+        <mat-select formControlName="type">
+          @for (t of types; track t.value) {
+            <mat-option [value]="t.value">{{ t.label }}</mat-option>
+          }
+        </mat-select>
+        <mat-icon matPrefix>category</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Dirección</mat-label>
+        <input matInput formControlName="address" placeholder="Ej: Av. Los Próceres 123" />
+        <mat-icon matPrefix>location_on</mat-icon>
+        @if (form.get('address')?.hasError('required') && form.get('address')?.touched) {
+          <mat-error>La dirección es obligatoria</mat-error>
+        }
+        @if (form.get('address')?.hasError('minlength') && form.get('address')?.touched) {
+          <mat-error>Mínimo 5 caracteres</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="description" rows="3" placeholder="Describe tu negocio..."></textarea>
+        @if (form.get('description')?.hasError('required') && form.get('description')?.touched) {
+          <mat-error>La descripción es obligatoria</mat-error>
+        }
+        @if (form.get('description')?.hasError('minlength') && form.get('description')?.touched) {
+          <mat-error>Mínimo 10 caracteres</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="location-box">
+        <p class="location-label">
+          <mat-icon>my_location</mat-icon>
+          {{ locationLabel }}
+        </p>
+        <button mat-stroked-button type="button" (click)="useMyLocation()" [disabled]="locating">
+          @if (locating) {
+            Detectando...
+          } @else {
+            Usar mi ubicación actual
+          }
+        </button>
+      </div>
+
+      @if (commerceStore.error()) {
+        <p class="error-message">{{ commerceStore.error() }}</p>
+      }
+
+      <div class="actions-row">
+        <button mat-button type="button" (click)="cancel()">Cancelar</button>
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="form.invalid || commerceStore.loading()">
+          @if (commerceStore.loading()) {
+            Guardando...
+          } @else {
+            Crear comercio
+          }
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

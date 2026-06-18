@@ -26,12 +26,21 @@
       }
     }
 
+    <!-- Carrito -->
+    <button mat-icon-button [routerLink]="['/cart']" aria-label="Carrito">
+      <mat-icon [matBadge]="cartStore.itemCount() > 0 ? cartStore.itemCount() : null"
+                matBadgeColor="accent"
+                matBadgeSize="small">
+        shopping_cart
+      </mat-icon>
+    </button>
+
     <!-- Usuario + logout -->
     <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="Perfil">
       <mat-icon>account_circle</mat-icon>
     </button>
     <mat-menu #userMenu="matMenu">
-      <button mat-menu-item disabled>
+      <button mat-menu-item [routerLink]="['/profile']">
         <mat-icon>person</mat-icon>
         {{ store.currentUser()?.name }}
       </button>
@@ -53,6 +62,13 @@
               {{ item.label }}
             </a>
           }
+          <a mat-list-item [routerLink]="['/cart']" (click)="sidenavOpen = false">
+            <mat-icon matListItemIcon>shopping_cart</mat-icon>
+            Carrito
+            @if (cartStore.itemCount() > 0) {
+              ({{ cartStore.itemCount() }})
+            }
+          </a>
         </mat-nav-list>
       </mat-sidenav>
     </mat-sidenav-container>

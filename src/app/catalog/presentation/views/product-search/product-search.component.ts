@@ -13,6 +13,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { CatalogStore } from '../../../application/catalog.store';
 import { SearchFilter } from '../../../domain/model/search-filter.value-object';
+import { Product } from '../../../domain/model/product.entity';
+import { DecimalPipe } from '@angular/common';
+import { CartStore } from '../../../../cart/application/cart.store';
 
 @Component({
   selector: 'app-product-search',
@@ -27,39 +30,45 @@ import { SearchFilter } from '../../../domain/model/search-filter.value-object';
     MatChipsModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatButtonModule
+    MatButtonModule,
+    DecimalPipe,
   ],
   templateUrl: './product-search.component.html',
-  styleUrl: './product-search.component.css'
+  styleUrl: './product-search.component.css',
 })
 export class ProductSearchComponent {
   protected readonly store = inject(CatalogStore);
+  protected readonly cartStore = inject(CartStore);
 
-  searchControl    = new FormControl('');
-  categoryControl  = new FormControl<string | null>(null);
+  searchControl = new FormControl('');
+  categoryControl = new FormControl<string | null>(null);
 
   constructor() {
-    this.searchControl.valueChanges.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      takeUntilDestroyed()
-    ).subscribe(() => this.applyFilter());
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
+      .subscribe(() => this.applyFilter());
 
-    this.categoryControl.valueChanges.pipe(
-      takeUntilDestroyed()
-    ).subscribe(() => this.applyFilter());
+    this.categoryControl.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.applyFilter());
   }
 
   private applyFilter(): void {
-    this.store.applyFilter(new SearchFilter({
-      query:    this.searchControl.value ?? '',
-      category: this.categoryControl.value
-    }));
+    this.store.applyFilter(
+      new SearchFilter({
+        query: this.searchControl.value ?? '',
+        category: this.categoryControl.value,
+      }),
+    );
   }
 
   clearSearch(): void {
     this.searchControl.setValue('');
     this.categoryControl.setValue(null);
     this.store.clearFilter();
+  }
+
+  addToCart(product: Product): void {
+    this.cartStore.addProduct(product, 1);
   }
 }

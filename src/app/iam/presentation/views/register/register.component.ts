@@ -8,9 +8,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
-import { IamStore } from '../../application/iam.store';
-import { User } from '../../domain/model/user.entity';
-import { UserRole } from '../../domain/model/user-role.enum';
+import { UserRole } from '../../../domain/model/user-role.enum';
+import { User } from '../../../domain/model/user.entity';
+import { IamStore } from '../../../application/iam.store';
+
 
 @Component({
   selector: 'app-register',

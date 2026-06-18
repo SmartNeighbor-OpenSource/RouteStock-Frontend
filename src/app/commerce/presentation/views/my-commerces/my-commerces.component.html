@@ -1,0 +1,47 @@
+<div class="my-commerces-container">
+  <div class="header-row">
+    <h2>Mis comercios</h2>
+    <button mat-flat-button color="primary" (click)="createCommerce()">
+      <mat-icon>add</mat-icon>
+      Nuevo comercio
+    </button>
+  </div>
+
+  @if (commerceStore.loading()) {
+    <div class="spinner-center"><mat-spinner diameter="48" /></div>
+  } @else if (commerceStore.error()) {
+    <p class="error-msg">{{ commerceStore.error() }}</p>
+  } @else if (myCommerces().length === 0) {
+    <div class="empty-state">
+      <mat-icon>storefront</mat-icon>
+      <p>Aún no tienes comercios registrados.</p>
+      <button mat-flat-button color="primary" (click)="createCommerce()">
+        Crear mi primer comercio
+      </button>
+    </div>
+  } @else {
+    <div class="commerces-grid">
+      @for (commerce of myCommerces(); track commerce.id) {
+        <mat-card class="commerce-card">
+          <mat-card-header>
+            <mat-card-title>{{ commerce.name }}</mat-card-title>
+            <mat-card-subtitle>{{ commerce.type }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="address">
+              <mat-icon>location_on</mat-icon>
+              {{ commerce.address }}
+            </p>
+            <p class="description">{{ commerce.description }}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button color="primary" (click)="openProducts(commerce.id)">
+              <mat-icon>inventory_2</mat-icon>
+              Gestionar productos
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  }
+</div>

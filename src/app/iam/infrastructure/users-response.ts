@@ -1,4 +1,5 @@
-import { BaseResource, BaseResponse } from '../../../shared/infrastructure/base-response';
+import { BaseResource, BaseResponse } from '../../shared/infrastructure';
+
 
 export interface UserResource extends BaseResource {
   id: number;

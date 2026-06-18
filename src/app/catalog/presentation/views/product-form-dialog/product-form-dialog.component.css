@@ -1,0 +1,4 @@
+.full-width { width: 100%; margin-bottom: 4px; }
+.row { display: flex; gap: 12px; }
+.half-width { width: 50%; }
+mat-dialog-content { min-width: 380px; padding-top: 8px; }

@@ -1,0 +1,43 @@
+.products-container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+.back-btn { margin-bottom: 8px; }
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.header-row h2 { margin: 0; font-weight: 600; }
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+}
+.out-of-stock { opacity: 0.6; }
+
+.price { font-size: 20px; font-weight: 700; color: #3f4ab8; margin: 8px 0 4px; }
+.stock { display: flex; align-items: center; gap: 4px; font-size: 13px; }
+.stock mat-icon { font-size: 16px; width: 16px; height: 16px; color: #2e7d32; }
+.no-stock { color: var(--mat-sys-error); }
+.no-stock mat-icon { color: var(--mat-sys-error); }
+
+mat-card-actions { margin-top: auto; display: flex; justify-content: space-between; }
+
+.spinner-center { display: flex; justify-content: center; margin-top: 80px; }
+.error-msg { color: var(--mat-sys-error); text-align: center; }
+
+.empty-state {
+  text-align: center;
+  padding: 64px 16px;
+  color: var(--mat-sys-on-surface-variant);
+}
+.empty-state mat-icon { font-size: 56px; width: 56px; height: 56px; opacity: 0.4; margin-bottom: 12px; }
+.empty-state button { margin-top: 16px; }

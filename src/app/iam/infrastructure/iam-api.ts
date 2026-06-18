@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { BaseApi } from '../../../shared/infrastructure/base-api';
+
 import { UsersApiEndpoint } from './users-api-endpoint';
 import { User } from '../domain/model/user.entity';
 import { Credentials } from '../domain/model/credentials.entity';
 import { UserAssembler } from './user-assembler';
-import { AuthResponse } from './users-response';
-import { environment } from '../../../../environments/environment';
+import { AuthResponse, UserResource } from './users-response';
+
+import { BaseApi } from '../../shared/infrastructure';
+import { environment } from '../../../environments';
+import { ProductResource } from '../../catalog/infrastructure/products-response';
+import { Product } from '../../catalog/domain/model/product.entity';
 
 @Injectable({ providedIn: 'root' })
 export class IamApi extends BaseApi {
@@ -21,27 +25,19 @@ export class IamApi extends BaseApi {
 
   login(credentials: Credentials): Observable<User> {
     return this.http
-      .post<AuthResponse>(
-        `${environment.platformProviderApiBaseUrl}${environment.authLoginEndpointPath}`,
-        { email: credentials.email, password: credentials.password }
-      )
-      .pipe(map(res => {
-        const user = this.assembler.toEntityFromResource(res.user);
-        user.token = res.token;
-        return user;
+      .get<UserResource[]>(`${environment.platformProviderApiBaseUrl}${environment.usersEndpointPath}?email=${credentials.email}&password=${credentials.password}`)
+      .pipe(map(users => {
+        if (users.length === 0) throw new Error('Credenciales inválidas');
+        return this.assembler.toEntityFromResource(users[0]);
       }));
   }
 
   register(user: User, password: string): Observable<User> {
     return this.http
-      .post<AuthResponse>(
-        `${environment.platformProviderApiBaseUrl}${environment.authRegisterEndpointPath}`,
+      .post<UserResource>(
+        `${environment.platformProviderApiBaseUrl}${environment.usersEndpointPath}`,
         { name: user.name, email: user.email, password, role: user.role }
       )
-      .pipe(map(res => this.assembler.toEntityFromResource(res.user)));
-  }
-
-  getUsers(): Observable<User[]> {
-    return this.usersEndpoint.getAll();
+      .pipe(map(res => this.assembler.toEntityFromResource(res)));
   }
 }

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { BaseApi } from '../../../shared/infrastructure/base-api';
+
 import { CommercesApiEndpoint } from './commerces-api-endpoint';
-import { Commerce } from '../domain/model/commerce.entity';
+import { Commerce } from '../domain/model';
+import { BaseApi } from '../../shared/infrastructure';
+
 
 @Injectable({ providedIn: 'root' })
 export class CommerceApi extends BaseApi {

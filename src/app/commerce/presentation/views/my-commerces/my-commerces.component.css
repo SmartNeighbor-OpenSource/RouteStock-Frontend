@@ -1,0 +1,50 @@
+.my-commerces-container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.header-row h2 { margin: 0; font-weight: 600; }
+
+.commerces-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.commerce-card {
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.address {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--mat-sys-on-surface-variant);
+  margin: 8px 0 4px;
+}
+.address mat-icon { font-size: 16px; width: 16px; height: 16px; margin-top: 1px; }
+
+.description {
+  font-size: 14px;
+  color: rgba(0,0,0,0.7);
+  margin: 4px 0 0;
+}
+
+mat-card-actions { margin-top: auto; }
+
+.spinner-center { display: flex; justify-content: center; margin-top: 80px; }
+.error-msg { color: var(--mat-sys-error); text-align: center; }
+
+.empty-state {
+  text-align: center;
+  padding: 64px 16px;
+  color: var(--mat-sys-on-surface-variant);
+}
+.empty-state mat-icon { font-size: 56px; width: 56px; height: 56px; opacity: 0.4; margin-bottom: 12px; }
+.empty-state button { margin-top: 16px; }

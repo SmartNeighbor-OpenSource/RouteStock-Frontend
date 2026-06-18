@@ -7,9 +7,11 @@ import { User } from '../domain/model/user.entity';
 import { Credentials } from '../domain/model/credentials.entity';
 import { UserRole } from '../domain/model/user-role.enum';
 
+const STORAGE_KEY = 'routestock_current_user';
+
 @Injectable({ providedIn: 'root' })
 export class IamStore {
-  private readonly currentUserSignal = signal<User | null>(null);
+  private readonly currentUserSignal = signal<User | null>(this.restoreUser());
   readonly currentUser = this.currentUserSignal.asReadonly();
 
   private readonly loadingSignal = signal<boolean>(false);
@@ -24,44 +26,87 @@ export class IamStore {
 
   constructor(
     private readonly iamApi: IamApi,
-    private readonly router: Router
+    private readonly router: Router,
   ) {}
 
   login(credentials: Credentials): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.iamApi.login(credentials).pipe(retry(1)).subscribe({
-      next: user => {
-        this.currentUserSignal.set(user);
-        this.loadingSignal.set(false);
-        const destination = user.isMerchant() ? '/commerce' : '/search';
-        this.router.navigate([destination]);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Error al iniciar sesión'));
-        this.loadingSignal.set(false);
-      }
-    });
+    this.iamApi
+      .login(credentials)
+      .pipe(retry(1))
+      .subscribe({
+        next: (user) => {
+          this.currentUserSignal.set(user);
+          this.persistUser(user);
+          this.loadingSignal.set(false);
+          const destination = user.isMerchant() ? '/commerce' : '/search';
+          this.router.navigate([destination]);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Error al iniciar sesión'));
+          this.loadingSignal.set(false);
+        },
+      });
   }
 
   register(user: User, password: string): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.iamApi.register(user, password).pipe(retry(1)).subscribe({
-      next: () => {
-        this.loadingSignal.set(false);
-        this.router.navigate(['/login']);
-      },
-      error: err => {
-        this.errorSignal.set(this.formatError(err, 'Error al registrarse'));
-        this.loadingSignal.set(false);
-      }
-    });
+    this.iamApi
+      .register(user, password)
+      .pipe(retry(1))
+      .subscribe({
+        next: () => {
+          this.loadingSignal.set(false);
+          this.router.navigate(['/login']);
+        },
+        error: (err) => {
+          this.errorSignal.set(this.formatError(err, 'Error al registrarse'));
+          this.loadingSignal.set(false);
+        },
+      });
   }
 
   logout(): void {
     this.currentUserSignal.set(null);
+    this.clearPersistedUser();
     this.router.navigate(['/login']);
+  }
+
+  private restoreUser(): User | null {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return new User(parsed);
+    } catch {
+      return null;
+    }
+  }
+
+  private persistUser(user: User): void {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        }),
+      );
+    } catch {
+      // localStorage no disponible (modo incógnito estricto, etc.) — la sesión simplemente no persistirá
+    }
+  }
+
+  private clearPersistedUser(): void {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // no-op
+    }
   }
 
   private formatError(error: any, fallback: string): string {

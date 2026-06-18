@@ -1,7 +1,8 @@
-import { BaseAssembler } from '../../../shared/infrastructure/base-assembler';
+
 import { User } from '../domain/model/user.entity';
 import { UserResource, UsersResponse } from './users-response';
 import { UserRole } from '../domain/model/user-role.enum';
+import { BaseAssembler } from '../../shared/infrastructure';
 
 export class UserAssembler implements BaseAssembler<User, UserResource, UsersResponse> {
 

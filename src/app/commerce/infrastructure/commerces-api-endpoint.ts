@@ -1,9 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { BaseApiEndpoint } from '../../../shared/infrastructure/base-api-endpoint';
-import { Commerce } from '../domain/model/commerce.entity';
+
+
 import { CommerceResource, CommercesResponse } from './commerces-response';
 import { CommerceAssembler } from './commerce-assembler';
-import { environment } from '../../../../environments/environment';
+import { BaseApiEndpoint } from '../../shared/infrastructure';
+import { environment } from '../../../environments';
+import { Commerce } from '../domain/model';
+
 
 export class CommercesApiEndpoint extends BaseApiEndpoint<Commerce, CommerceResource, CommercesResponse, CommerceAssembler> {
   constructor(http: HttpClient) {

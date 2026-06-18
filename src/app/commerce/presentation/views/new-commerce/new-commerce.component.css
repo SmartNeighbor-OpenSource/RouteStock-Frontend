@@ -1,0 +1,47 @@
+.new-commerce-card {
+  max-width: 480px;
+  margin: 48px auto;
+  padding: 24px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+mat-card-header { margin-bottom: 16px; }
+mat-card-title { font-size: 1.5rem; font-weight: 600; }
+mat-card-subtitle { margin-top: 4px; }
+
+.full-width { width: 100%; margin-bottom: 12px; }
+
+.location-box {
+  background: #f0f2fa;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+.location-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.7);
+  margin: 0 0 8px;
+}
+.location-label mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+.error-message {
+  color: var(--mat-sys-error);
+  font-size: 14px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.actions-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+@media (max-width: 480px) {
+  .new-commerce-card { margin: 24px 16px; }
+}

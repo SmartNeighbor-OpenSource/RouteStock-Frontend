@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { BaseApi } from '../../../shared/infrastructure/base-api';
+
 import { ProductsApiEndpoint } from './products-api-endpoint';
 import { Product } from '../domain/model/product.entity';
+import { BaseApi } from '../../shared/infrastructure';
 
 @Injectable({ providedIn: 'root' })
 export class CatalogApi extends BaseApi {

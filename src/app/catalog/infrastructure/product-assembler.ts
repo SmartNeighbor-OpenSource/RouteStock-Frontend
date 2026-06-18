@@ -1,6 +1,7 @@
-import { BaseAssembler } from '../../../shared/infrastructure/base-assembler';
+
 import { Product } from '../domain/model/product.entity';
 import { ProductResource, ProductsResponse } from './products-response';
+import { BaseAssembler } from '../../shared/infrastructure';
 
 export class ProductAssembler implements BaseAssembler<Product, ProductResource, ProductsResponse> {
 

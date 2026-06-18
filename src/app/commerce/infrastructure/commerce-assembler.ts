@@ -1,8 +1,9 @@
-import { BaseAssembler } from '../../../shared/infrastructure/base-assembler';
-import { Commerce } from '../domain/model/commerce.entity';
+
+
 import { CommerceResource, CommercesResponse } from './commerces-response';
-import { CommerceType } from '../domain/model/commerce-type.enum';
-import { GeoPoint } from '../domain/model/geo-point.value-object';
+
+import { BaseAssembler } from '../../shared/infrastructure';
+import { Commerce, CommerceType, GeoPoint } from '../domain/model';
 
 export class CommerceAssembler implements BaseAssembler<Commerce, CommerceResource, CommercesResponse> {
 

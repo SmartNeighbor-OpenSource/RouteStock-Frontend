@@ -1,0 +1,146 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Luis",
+      "email": "luis@test.com",
+      "password": "123456",
+      "role": "MERCHANT"
+    },
+    {
+      "id": 2,
+      "name": "Ana",
+      "email": "ana@test.com",
+      "password": "123456",
+      "role": "CONSUMER"
+    },
+    {
+      "id": 3,
+      "name": "Jose perez",
+      "email": "jose@gmail.com",
+      "password": "123456",
+      "role": "CONSUMER"
+    }
+  ],
+  "commerces": [
+    {
+      "id": 1,
+      "ownerId": 1,
+      "name": "Bodega Don Luis",
+      "address": "Av. Los Próceres 123, San Juan de Lurigancho",
+      "description": "Bodega de barrio con productos de primera necesidad, abarrotes y bebidas.",
+      "type": "BODEGA",
+      "lat": -12.0246,
+      "lng": -77.0096,
+      "imageUrl": null
+    },
+    {
+      "id": 1781747896677,
+      "ownerId": 1,
+      "name": "Don pepe",
+      "address": "av.Ricardo Palma 333",
+      "description": "tienda de don pepe",
+      "type": "BODEGA",
+      "lat": -12.147317709871693,
+      "lng": -77.00492783208351
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Coca Cola 500ml",
+      "price": 4.5,
+      "commerceId": 1,
+      "category": "Bebidas",
+      "stock": 50
+    },
+    {
+      "id": 2,
+      "name": "Inca Kola 1L",
+      "price": 7,
+      "commerceId": 1,
+      "category": "Bebidas",
+      "stock": 30
+    },
+    {
+      "id": 3,
+      "name": "Arroz Costeño 5kg",
+      "price": 22.9,
+      "commerceId": 1,
+      "category": "Abarrotes",
+      "stock": 15
+    },
+    {
+      "id": 5,
+      "commerceId": 1,
+      "name": "Leche Gloria 400g",
+      "category": "Lacteos",
+      "price": 5.2,
+      "stock": 39
+    },
+    {
+      "id": 6,
+      "name": "Yogurt Gloria Fresa 1L",
+      "price": 9.9,
+      "commerceId": 1,
+      "category": "Lacteos",
+      "stock": 18
+    },
+    {
+      "id": 7,
+      "name": "Pan Francés (unidad)",
+      "price": 0.4,
+      "commerceId": 1,
+      "category": "Panaderia",
+      "stock": 200
+    },
+    {
+      "id": 8,
+      "name": "Galletas Soda Field",
+      "price": 1.5,
+      "commerceId": 1,
+      "category": "Snacks",
+      "stock": 60
+    },
+    {
+      "id": 9,
+      "name": "Detergente Bolivar 1kg",
+      "price": 8.9,
+      "commerceId": 1,
+      "category": "Limpieza",
+      "stock": 0
+    },
+    {
+      "id": 10,
+      "name": "Papel Higiénico Suave x4",
+      "price": 6.5,
+      "commerceId": 1,
+      "category": "Limpieza",
+      "stock": 35
+    },
+    {
+      "id": 1781746394943,
+      "commerceId": 1,
+      "name": "Pollo completo",
+      "category": "comida",
+      "price": 100,
+      "stock": 23
+    },
+    {
+      "id": 1781746533599,
+      "commerceId": 1,
+      "name": "Gaseosa grande",
+      "category": "Bebida",
+      "price": 4,
+      "stock": 2
+    },
+    {
+      "id": 1781746830071,
+      "commerceId": 1,
+      "name": "Gorro",
+      "category": "Ropa",
+      "price": 1000,
+      "stock": 2
+    }
+  ]
+}
