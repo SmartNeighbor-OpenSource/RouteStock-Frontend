@@ -20,6 +20,34 @@
       "email": "jose@gmail.com",
       "password": "123456",
       "role": "CONSUMER"
+    },
+    {
+      "name": "Luis",
+      "email": "luis@test.com",
+      "password": "123456",
+      "role": "CONSUMER",
+      "id": 4
+    },
+    {
+      "name": "jose",
+      "email": "luis@test.com",
+      "password": "123456",
+      "role": "MERCHANT",
+      "id": 5
+    },
+    {
+      "name": "juan perez",
+      "email": "asdw@gmail.com",
+      "password": "123456",
+      "role": "CONSUMER",
+      "id": 6
+    },
+    {
+      "name": "juan jose",
+      "email": "aaaa11@gmail.com",
+      "password": "123456",
+      "role": "MERCHANT",
+      "id": 7
     }
   ],
   "commerces": [
@@ -64,11 +92,11 @@
     },
     {
       "id": 3,
-      "name": "Arroz Costeño 5kg",
-      "price": 22.9,
       "commerceId": 1,
+      "name": "Arroz Costeño 5kg",
       "category": "Abarrotes",
-      "stock": 15
+      "price": 22.9,
+      "stock": 14
     },
     {
       "id": 5,

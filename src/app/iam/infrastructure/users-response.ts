@@ -1,11 +1,10 @@
 import { BaseResource, BaseResponse } from '../../shared/infrastructure';
 
-
 export interface UserResource extends BaseResource {
   id: number;
-  name: string;
+  fullName: string;
   email: string;
-  role: string;
+  userType: string;
   token?: string;
 }
 

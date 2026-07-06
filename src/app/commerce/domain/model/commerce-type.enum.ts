@@ -1,5 +1,5 @@
 export enum CommerceType {
-  BODEGA    = 'BODEGA',
-  AMBULANTE = 'AMBULANTE',
-  TIENDA    = 'TIENDA'
+  BODEGA = 'BODEGA',
+  STREET_VENDOR = 'AMBULANTE',
+  LOCAL_SHOP = 'TIENDA',
 }

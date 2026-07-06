@@ -38,8 +38,8 @@ export class NewCommerceComponent {
 
   protected readonly types = [
     { value: CommerceType.BODEGA, label: 'Bodega' },
-    { value: CommerceType.AMBULANTE, label: 'Ambulante' },
-    { value: CommerceType.TIENDA, label: 'Tienda' },
+    { value: CommerceType.STREET_VENDOR, label: 'Ambulante' },
+    { value: CommerceType.LOCAL_SHOP, label: 'Tienda' },
   ];
 
   protected locating = false;

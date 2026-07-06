@@ -25,19 +25,28 @@ export class IamApi extends BaseApi {
 
   login(credentials: Credentials): Observable<User> {
     return this.http
-      .get<UserResource[]>(`${environment.platformProviderApiBaseUrl}${environment.usersEndpointPath}?email=${credentials.email}&password=${credentials.password}`)
-      .pipe(map(users => {
-        if (users.length === 0) throw new Error('Credenciales inválidas');
-        return this.assembler.toEntityFromResource(users[0]);
-      }));
+      .post<UserResource>(
+        `${environment.platformProviderApiBaseUrl}${environment.authenticationEndpointPath}/sign-in`,
+        { email: credentials.email, password: credentials.password },
+      )
+      .pipe(map((res) => this.assembler.toEntityFromResource(res)));
   }
 
   register(user: User, password: string): Observable<User> {
+    const [firstName, ...rest] = user.name.trim().split(' ');
+    const lastName = rest.join(' ') || firstName;
+
     return this.http
       .post<UserResource>(
-        `${environment.platformProviderApiBaseUrl}${environment.usersEndpointPath}`,
-        { name: user.name, email: user.email, password, role: user.role }
+        `${environment.platformProviderApiBaseUrl}${environment.authenticationEndpointPath}/sign-up`,
+        {
+          firstName,
+          lastName,
+          email: user.email,
+          password,
+          userType: user.role,
+        },
       )
-      .pipe(map(res => this.assembler.toEntityFromResource(res)));
+      .pipe(map((res) => this.assembler.toEntityFromResource(res)));
   }
 }

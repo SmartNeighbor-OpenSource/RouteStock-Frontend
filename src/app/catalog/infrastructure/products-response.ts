@@ -1,14 +1,14 @@
 import { BaseResource, BaseResponse } from '../../shared/infrastructure';
 
-
 export interface ProductResource extends BaseResource {
   id: number;
-  commerceId: number;
+  storeId: number;
   name: string;
-  category: string;
+  description?: string;
   price: number;
+  currency?: string;
   stock: number;
-  imageUrl?: string;
+  availability?: string;
 }
 
 export interface ProductsResponse extends BaseResponse {
