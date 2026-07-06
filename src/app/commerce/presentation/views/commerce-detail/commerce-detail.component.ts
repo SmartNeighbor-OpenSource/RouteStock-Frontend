@@ -43,6 +43,9 @@ export class CommerceDetailComponent implements OnInit {
     const productIdParam = this.route.snapshot.queryParamMap.get('productId');
     this.focusedProductId = productIdParam ? Number(productIdParam) : null;
 
-    if (this.commerceId) this.store.selectCommerce(this.commerceId);
+    if (this.commerceId) {
+      this.store.selectCommerce(this.commerceId);
+      this.catalogStore.loadProductsByCommerce(this.commerceId);
+    }
   }
 }

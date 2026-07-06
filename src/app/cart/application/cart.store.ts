@@ -1,6 +1,7 @@
 import { computed, Injectable, signal } from '@angular/core';
+import { forkJoin } from 'rxjs';
 import { CartItem } from '../domain/model/cart-item.entity';
-import { CatalogStore } from '../../catalog/application/catalog.store';
+import { CatalogApi } from '../../catalog/infrastructure/catalog-api';
 import { Product } from '../../catalog/domain/model/product.entity';
 
 const STORAGE_KEY = 'routestock_cart';
@@ -20,7 +21,7 @@ export class CartStore {
   private readonly checkingOutSignal = signal<boolean>(false);
   readonly checkingOut = this.checkingOutSignal.asReadonly();
 
-  constructor(private readonly catalogStore: CatalogStore) {}
+  constructor(private readonly catalogApi: CatalogApi) {}
 
   addProduct(product: Product, quantity: number = 1): void {
     this.errorSignal.set(null);
@@ -112,7 +113,11 @@ export class CartStore {
     this.updateItems([]);
   }
 
-  /** Confirma la compra: descuenta stock real de cada producto vía CatalogStore */
+  /**
+   * Confirma la compra: valida y descuenta el stock real de cada producto en el
+   * backend. El stock se resuelve por id directamente del backend (GET /products/{id})
+   * y no del catálogo en memoria, que es un caché volátil compartido entre vistas.
+   */
   checkout(onSuccess: () => void): void {
     const items = this.itemsSignal();
     if (items.length === 0) return;
@@ -120,38 +125,48 @@ export class CartStore {
     this.checkingOutSignal.set(true);
     this.errorSignal.set(null);
 
-    const products = this.catalogStore.products();
-    for (const item of items) {
-      const product = products.find((p) => p.id === item.productId);
-      if (!product) continue;
-      if (item.quantity > product.stock) {
-        this.errorSignal.set(`El stock de "${item.name}" cambió. Por favor revisa tu carrito.`);
+    forkJoin(items.map((item) => this.catalogApi.getProduct(item.productId))).subscribe({
+      next: (products) => {
+        // Validar contra el stock actual del backend antes de descontar.
+        const overSold = items.find((item, i) => item.quantity > products[i].stock);
+        if (overSold) {
+          this.errorSignal.set(
+            `El stock de "${overSold.name}" cambió. Por favor revisa tu carrito.`,
+          );
+          this.checkingOutSignal.set(false);
+          return;
+        }
+
+        const updates = items.map((item, i) => {
+          const p = products[i];
+          const updated = new Product({
+            id: p.id,
+            commerceId: p.commerceId,
+            name: p.name,
+            category: p.category,
+            price: p.price,
+            stock: p.stock - item.quantity,
+            imageUrl: p.imageUrl,
+          });
+          return this.catalogApi.updateProduct(updated);
+        });
+
+        forkJoin(updates).subscribe({
+          next: () => {
+            this.checkingOutSignal.set(false);
+            this.clearCart();
+            onSuccess();
+          },
+          error: () => {
+            this.errorSignal.set('No se pudo completar la compra. Intenta de nuevo.');
+            this.checkingOutSignal.set(false);
+          },
+        });
+      },
+      error: () => {
+        this.errorSignal.set('No se pudo verificar el stock. Intenta de nuevo.');
         this.checkingOutSignal.set(false);
-        return;
-      }
-    }
-
-    items.forEach((item, index) => {
-      const product = products.find((p) => p.id === item.productId);
-      if (!product) return;
-
-      const updated = new Product({
-        id: product.id,
-        commerceId: product.commerceId,
-        name: product.name,
-        category: product.category,
-        price: product.price,
-        stock: product.stock - item.quantity,
-        imageUrl: product.imageUrl,
-      });
-
-      this.catalogStore.updateProduct(updated);
-
-      if (index === items.length - 1) {
-        this.checkingOutSignal.set(false);
-        this.clearCart();
-        onSuccess();
-      }
+      },
     });
   }
 

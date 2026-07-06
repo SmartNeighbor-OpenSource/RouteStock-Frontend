@@ -37,6 +37,7 @@ export class MyCommerceProductsComponent implements OnInit {
 
   ngOnInit(): void {
     this.commerceId = Number(this.route.snapshot.paramMap.get('id'));
+    if (this.commerceId) this.catalogStore.loadProductsByCommerce(this.commerceId);
   }
 
   goBack(): void {

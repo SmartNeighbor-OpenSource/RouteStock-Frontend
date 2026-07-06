@@ -1,6 +1,5 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { retry } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CatalogApi } from '../infrastructure/catalog-api';
 import { Product } from '../domain/model/product.entity';
 import { SearchFilter } from '../domain/model/search-filter.value-object';
@@ -30,26 +29,50 @@ export class CatalogStore {
 
   readonly categories = computed(() => [...new Set(this.products().map((p) => p.category))]);
 
-  constructor(private readonly catalogApi: CatalogApi) {
-    this.loadProducts();
+  constructor(private readonly catalogApi: CatalogApi) {}
+
+  /**
+   * Busca productos disponibles por nombre contra el backend (GET /products?name=).
+   * El backend solo devuelve resultados cuando se envía un término, por lo que una
+   * consulta vacía limpia la lista en lugar de pedir "todos" (endpoint inexistente).
+   */
+  searchProducts(query: string): void {
+    const term = query.trim();
+    this.errorSignal.set(null);
+
+    if (!term) {
+      this.productsSignal.set([]);
+      this.loadingSignal.set(false);
+      return;
+    }
+
+    this.loadingSignal.set(true);
+    this.catalogApi.searchProducts(term).subscribe({
+      next: (list) => {
+        this.productsSignal.set(list);
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Error al buscar productos'));
+        this.loadingSignal.set(false);
+      },
+    });
   }
 
-  private loadProducts(): void {
+  /** Carga el inventario de un comercio concreto (GET /products?storeId=). */
+  loadProductsByCommerce(commerceId: number): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
-    this.catalogApi
-      .getProducts()
-      .pipe(takeUntilDestroyed())
-      .subscribe({
-        next: (list) => {
-          this.productsSignal.set(list);
-          this.loadingSignal.set(false);
-        },
-        error: (err) => {
-          this.errorSignal.set(this.formatError(err, 'Error al cargar productos'));
-          this.loadingSignal.set(false);
-        },
-      });
+    this.catalogApi.getProductsByStore(commerceId).subscribe({
+      next: (list) => {
+        this.productsSignal.set(list);
+        this.loadingSignal.set(false);
+      },
+      error: (err) => {
+        this.errorSignal.set(this.formatError(err, 'Error al cargar productos'));
+        this.loadingSignal.set(false);
+      },
+    });
   }
 
   applyFilter(filter: SearchFilter): void {

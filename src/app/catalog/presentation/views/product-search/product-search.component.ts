@@ -46,11 +46,17 @@ export class ProductSearchComponent {
   constructor() {
     this.searchControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
-      .subscribe(() => this.applyFilter());
+      .subscribe((value) => this.runSearch(value ?? ''));
 
     this.categoryControl.valueChanges
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.applyFilter());
+  }
+
+  /** Lanza la búsqueda por nombre contra el backend y conserva el filtro de categoría en cliente. */
+  private runSearch(query: string): void {
+    this.store.searchProducts(query);
+    this.applyFilter();
   }
 
   private applyFilter(): void {
@@ -65,6 +71,7 @@ export class ProductSearchComponent {
   clearSearch(): void {
     this.searchControl.setValue('');
     this.categoryControl.setValue(null);
+    this.store.searchProducts('');
     this.store.clearFilter();
   }
 

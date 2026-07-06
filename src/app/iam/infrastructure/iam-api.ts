@@ -6,12 +6,10 @@ import { UsersApiEndpoint } from './users-api-endpoint';
 import { User } from '../domain/model/user.entity';
 import { Credentials } from '../domain/model/credentials.entity';
 import { UserAssembler } from './user-assembler';
-import { AuthResponse, UserResource } from './users-response';
+import { UserResource } from './users-response';
 
 import { BaseApi } from '../../shared/infrastructure';
 import { environment } from '../../../environments';
-import { ProductResource } from '../../catalog/infrastructure/products-response';
-import { Product } from '../../catalog/domain/model/product.entity';
 
 @Injectable({ providedIn: 'root' })
 export class IamApi extends BaseApi {

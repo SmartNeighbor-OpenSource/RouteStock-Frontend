@@ -1,0 +1,15 @@
+# Configuración de despliegue en Netlify para el frontend Angular de RouteStock.
+[build]
+  command = "npm run build"
+  publish = "dist/RouteStockFrontend/browser"
+
+# Angular 21 requiere Node 20.19+ / 22.12+; fijamos una versión soportada
+# para que el build de Netlify no use un Node por defecto más antiguo.
+[build.environment]
+  NODE_VERSION = "22"
+
+# SPA fallback: toda ruta no encontrada la resuelve el router de Angular.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
